@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface InventoryService {
     Inventory addInventory(Inventory inventory);
-    Inventory updateInventory(long id, Inventory inventory);
+    Optional<Inventory> updateInventory(long id, Inventory inventory);
     void deleteInventory(long id);
     List<Inventory> getAllInventories();
     Optional<Inventory> getInventoryById(long id);

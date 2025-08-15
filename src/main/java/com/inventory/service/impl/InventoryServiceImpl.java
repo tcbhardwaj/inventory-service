@@ -25,12 +25,12 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Inventory updateInventory(long id, Inventory inventory) {
+    public Optional<Inventory> updateInventory(long id, Inventory inventory) {
         if (inventoryRepository.existsById(id)) {
             inventory.setId(id);
-            return inventoryRepository.save(inventory);
+            return Optional.of(inventoryRepository.save(inventory));
         }
-        return null; // or throw an exception
+        return Optional.empty(); // or throw an exception
     }
 
     @Override

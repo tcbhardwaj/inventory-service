@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/inventory")
 public class InventoryController {
@@ -31,12 +29,8 @@ public class InventoryController {
     // Add other CRUD operations as needed
     @PutMapping("/{id}")
     public ResponseEntity<Inventory> updateInventory(@PathVariable long id, @RequestBody Inventory inventory) {
-        Inventory updatedInventory = inventoryService.updateInventory(id, inventory);
-        if (updatedInventory != null) {
-            return ResponseEntity.ok(updatedInventory);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return inventoryService.updateInventory(id, inventory)
+            .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInventory(@PathVariable long id) {
@@ -47,7 +41,7 @@ public class InventoryController {
     //get inventory details by productId
     @GetMapping("/product/{productId}")
     public ResponseEntity<Inventory> getInventoryByProductId(@PathVariable String productId) {
-        Optional<Inventory> inventoryByProductId = inventoryService.getInventoryByProductId(productId);
-        return inventoryByProductId.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return inventoryService.getInventoryByProductId(productId)
+            .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
